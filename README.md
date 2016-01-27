@@ -9,8 +9,8 @@ Gulp plugin for watching the commit changes in the repository defined as a depen
 		repoWatch({
 		        repository: 'git@github.com:acierto/gulp-repository-watch.git'
 		    })
-			.on('check', function(commitRevision) {
-				console.log('CHECK!', commitRevision);
+			.on('check', function() {
+				console.log('ping');
 			})
 			.on('change', function(newHash, oldHash) {
 				console.log('Changed from ', oldHash, ' to ', newHash);
