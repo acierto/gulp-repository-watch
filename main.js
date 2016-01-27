@@ -5,13 +5,20 @@ var util = require('util');
 
 function GulpRepositoryWatch(options) {
     var self = this;
+
+    if (!options || !options.repository) {
+        throw Error('Please define the remote repository which you would like to watch.');
+    }
+
+    var counter = 0;
+    var stopPolling = false;
+
     var settings = {
-        poll: 1000,
-        initialPoll: 1000,
         head: null,
-        forceHead: false,
         gitHead: ['git', 'ls-remote', options.repository, 'HEAD', '-n', '1'],
-        gitPull: ['git', 'pull']
+        gitPull: ['git', 'pull'],
+        poll: 1000,
+        retries: null
     };
 
     if (options) {
@@ -20,19 +27,28 @@ function GulpRepositoryWatch(options) {
         }
     }
 
+    var getCommitRevision = function (printInfo) {
+        return printInfo ? printInfo.split('\t')[0] : '';
+    };
+
     var GulpGitWatchCheck = function () {
         self.emit('check');
+
+        self.on('stop', function() {
+            stopPolling = true;
+        });
 
         async()
             .use(asyncExec)
             .then(function (next) {
-                if (settings.head && !settings.forceHead) return next();
+                if (settings.head) return next();
                 async()
                     .use(asyncExec)
                     .exec('head', settings.gitHead)
                     .end(function (err) {
+                        counter++;
                         if (err) return next(err);
-                        settings.head = this.head[0];
+                        settings.head = getCommitRevision(this.head[0]);
                         next();
                     });
             })
@@ -42,7 +58,7 @@ function GulpRepositoryWatch(options) {
                 if (err) {
                     throw new Error(err);
                 } else {
-                    var newHead = this.newHead[0];
+                    var newHead = getCommitRevision(this.newHead[0]);
                     if (newHead != settings.head) {
                         self.emit('change', newHead, settings.head);
                         settings.head = newHead;
@@ -50,7 +66,9 @@ function GulpRepositoryWatch(options) {
                         self.emit('nochange', settings.head);
                     }
                 }
-                setTimeout(GulpGitWatchCheck, settings.poll);
+                if ((!settings.retries || counter < settings.retries) && !stopPolling) {
+                    setTimeout(GulpGitWatchCheck, settings.poll);
+                }
             });
     };
 
@@ -60,5 +78,5 @@ function GulpRepositoryWatch(options) {
 util.inherits(GulpRepositoryWatch, events.EventEmitter);
 
 module.exports = function (options) {
-    return new GulpGitWatch(options);
+    return new GulpRepositoryWatch(options);
 };
