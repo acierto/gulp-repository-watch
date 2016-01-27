@@ -6,7 +6,7 @@ describe('gulp-repository-watch', function () {
     this.timeout(5000);
 
     it('should retrieve the latest commit revision', function(done) {
-        var p = plugin({move
+        var p = plugin({
             repository: 'git@github.com:acierto/gulp-repository-watch.git'
         }).on('nochange', function(commitRevision) {
             should.exist(commitRevision);
