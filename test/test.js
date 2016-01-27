@@ -15,10 +15,10 @@ describe('gulp-repository-watch', function () {
             done();
         });
     });
-    //
-    //it('should throw exception that required field as repository is not defined', function () {
-    //    (function () {
-    //        plugin();
-    //    }).should.throw('Please define the remote repository which you would like to watch.');
-    //});
+
+    it('should throw exception that required field as repository is not defined', function () {
+        (function () {
+            plugin();
+        }).should.throw('Please define the remote repository which you would like to watch.');
+    });
 });
