@@ -2,6 +2,8 @@ gulp = require('gulp')
 mocha = require('gulp-mocha')
 eslint = require('gulp-eslint')
 
+require('gulp-release-it')(gulp)
+
 paths = {
   scripts: ['./*.js']
 };
