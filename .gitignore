@@ -1,0 +1,16 @@
+npm-debug.log
+
+.DS_Store
+.bundle
+.envrc
+
+*.iml
+*.map
+*.swp
+*.swo
+*~
+
+.idea/
+bin/
+doc/
+node_modules
