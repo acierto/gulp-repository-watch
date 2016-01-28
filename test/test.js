@@ -3,11 +3,11 @@ var plugin = require('../main');
 var should = require('should');
 
 describe('gulp-repository-watch', function () {
-    this.timeout(5000);
+    this.timeout(10000);
 
     it('should retrieve the latest commit revision', function(done) {
         var p = plugin({
-            repository: 'git@github.com:acierto/gulp-repository-watch.git'
+            repository: 'git@github.com:acierto/test-repo.git#experimental'
         }).on('nochange', function(commitRevision) {
             should.exist(commitRevision);
             p.emit('stop');

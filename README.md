@@ -16,7 +16,12 @@ Gulp plugin for watching the commit changes in the repository defined as a depen
 				console.log('Changed from ', oldHash, ' to ', newHash);
 			});
 	});
+	
+You can also point to the branch of the repository by specifying it like that:
 
+    repoWatch({
+        repository: 'git@github.com:acierto/gulp-repository-watch.git#experimental'
+        ...
 
 Options
 -------

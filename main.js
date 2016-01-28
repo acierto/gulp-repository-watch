@@ -17,9 +17,17 @@ function GulpRepositoryWatch(options) {
         stopPolling = true;
     });
 
+    var optRepository = options.repository;
+    var hashIndex = optRepository.indexOf('#');
+
+    var remoteRepository = hashIndex != -1 ? optRepository.substring(0, hashIndex) : optRepository;
+    var branch = hashIndex != -1 ? optRepository.substring(hashIndex + '#'.length) : 'HEAD';
+
+    console.log(['git', 'ls-remote', remoteRepository, branch, '-n', '1'].join(' '));
+
     var settings = {
         head: null,
-        gitHead: ['git', 'ls-remote', options.repository, 'HEAD', '-n', '1'],
+        gitHead: ['git', 'ls-remote', remoteRepository, branch, '-n', '1'],
         gitPull: ['git', 'pull'],
         poll: 1000,
         retries: null
