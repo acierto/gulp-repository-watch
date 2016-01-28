@@ -13,6 +13,10 @@ function GulpRepositoryWatch(options) {
     var counter = 0;
     var stopPolling = false;
 
+    self.on('stop', function() {
+        stopPolling = true;
+    });
+
     var settings = {
         head: null,
         gitHead: ['git', 'ls-remote', options.repository, 'HEAD', '-n', '1'],
@@ -33,10 +37,6 @@ function GulpRepositoryWatch(options) {
 
     var GulpGitWatchCheck = function () {
         self.emit('check');
-
-        self.on('stop', function() {
-            stopPolling = true;
-        });
 
         async()
             .use(asyncExec)
