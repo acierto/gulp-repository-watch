@@ -23,8 +23,6 @@ function GulpRepositoryWatch(options) {
     var remoteRepository = hashIndex != -1 ? optRepository.substring(0, hashIndex) : optRepository;
     var branch = hashIndex != -1 ? optRepository.substring(hashIndex + '#'.length) : 'HEAD';
 
-    console.log(['git', 'ls-remote', remoteRepository, branch, '-n', '1'].join(' '));
-
     var settings = {
         head: null,
         gitHead: ['git', 'ls-remote', remoteRepository, branch, '-n', '1'],
