@@ -3,7 +3,7 @@
   "description": "Gulp plugin for watching the commit changes in the repository defined as a dependency in bower.json",
   "author": "Bogdan Nechyporenko",
   "repository": "git@github.com:acierto/gulp-repository-watch.git",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "main.js",
   "dependencies": {
     "async-chainable": "1.7.15",
